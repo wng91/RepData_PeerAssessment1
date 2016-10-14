@@ -4,7 +4,7 @@
 
 ###We have downloaded the zip file into our desktop and we are going to unzip it and read the document it has using R.
 ```r
-c=unzip('zipfile="activity.zip"')
+c=unzip(zipfile="activity.zip")
 b=read.csv("activity.csv")
 library(dplyr)
 library(ggplot2)
