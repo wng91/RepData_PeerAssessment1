@@ -5,7 +5,7 @@
 ###We have downloaded the zip file into our desktop and we are going to unzip it and read the document it has using R.
 ```r
 c=unzip(zipfile="activity.zip")
-b=read.csv("activity.csv")
+b=read.csv(c)
 library(dplyr)
 library(ggplot2)
 
@@ -19,6 +19,7 @@ g=split(b$steps,b$date)
 steps=sapply(g,sum)
 hist(steps)
 ```
+![Histogram](/plot1.png)
 
 ##Getting the mean
 
