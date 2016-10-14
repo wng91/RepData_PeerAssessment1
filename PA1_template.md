@@ -2,9 +2,10 @@
 
 ##Getting data
 
-###We have downloaded the zip file into our desktop and we are going to unzip it and read the document it has using R.
+We are going to unzip it and read the document it has using R.
 ```r
-c=unzip(zipfile="activity.zip")
+download.file('https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip','data.zip')
+c=unzip('data.zip')
 b=read.csv(c)
 library(dplyr)
 library(ggplot2)
@@ -23,41 +24,51 @@ hist(steps)
 
 ##Getting the mean
 
-###With the data that we have now,we will calculate the mean number of steps taken each day
+With the data that we have now,we will calculate the mean number of steps taken each day
 ```r
 mean(steps,na.rm=TRUE)
 ```
+The mean is 10766.19
+
 
 ##Getting the median
 
-###With the data that we have now,we will find the median of the total number of steps taken each day
+With the data that we have now,we will find the median of the total number of steps taken each day
 ```r
 median(steps,na.rm=TRUE)
 ```
-
+The median is 10765
 
 ##Time series plot
 ###Make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days
 
-###We will first group the number of steps in the different interval and plot the time series thereafter.
+We will first group the number of steps in the different interval and plot the time series thereafter.
 ```r
 q = tapply(b$steps,b$interval,mean,na.rm= TRUE,simplify = TRUE)
 plot(y = q, x = names(q), type = "l", xlab = "5-Minute-Interval", 
          main = "Daily Activity Pattern", ylab = "Average number of steps")
 ```
+![TS plot](/plot2.png)
 
-###This is the time interval that contains the maximum no. of steps
+
+This is the time interval that contains the maximum no. of steps
 ```r
 sort(q,decreasing = TRUE)[1]
 ```
+835
+
+206.1698
+
 ##Inputting missing values
 
-###This is the no. of rows with NA in the dataset
+This is the no. of rows with NA in the dataset
 ```r
 w=complete.cases(b)
 r=b[!w,]
 nrow(r)
 ```
+2304
+
 
 We will now fill the N.A with the mean for that 5-min interval
 ```r
@@ -73,23 +84,25 @@ for( i in 1:nrow(f)) {
 }
 ```
 
-###This is the new histogram
+This is the new histogram
 ```r
 h=split(f$steps,f$date)
 StepsNew=sapply(h,sum)
 hist(StepsNew)
 ```
+![New Histogram](/plot3.png)
 
-
-###This is the new mean
+This is the new mean
 ```r
 mean(StepsNew,na.rm=TRUE)
 ```
+10766.19
 
 This is the new median
 ```r
 median(StepsNew,na.rm=TRUE)
 ```
+10766.19
 
 The values are the same as the initiate mean value.
 
@@ -108,3 +121,4 @@ We will now plot out the result
 v=newdata %>% group_by(interval,weekDay) %>% summarise(steps=mean(steps))
 ggplot(v,aes(x=interval,y=steps),colour=weekDay) +geom_line()+facet_wrap(~weekDay, ncol = 1, nrow=2)
 ```
+![Final Plot](/plot4.png)
